@@ -4,7 +4,7 @@
 
 Countdown module, developped in ReactJS 18, Typescript 4.6, Sass 1.5<br />
 
-You can report issues related to the game: [issues](https://github.com/delphinbock/spock/issues)<br />
+You can report issues related to the game: [issues](https://github.com/delphinbock/countdown/issues)<br />
 
 ## Module
 
