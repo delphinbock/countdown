@@ -2,7 +2,7 @@
 
 [![GNU License](https://img.shields.io/badge/license-GNU-blue.svg?style=style=flat-square)](https://www.gnu.org/licenses/gpl-3.0.html)
 
-Countdown module, developped in ReactJS 18, Typescript 4.6, Sass 1.5<br /><br />
+Countdown module, developped in ReactJS 18, Typescript 4.6, Sass 1.5<br />
 
 You can report issues related to the game: [issues](https://github.com/delphinbock/spock/issues)<br />
 
@@ -10,7 +10,7 @@ You can report issues related to the game: [issues](https://github.com/delphinbo
 
 ![image](./2.jpg)
 
-Customize the following constants<br /><br />
+Customize the following constants in the file named "countDown.tsx"<br />
 
 ```javascript
 const eventMessage = "It's time of event"; // Message
