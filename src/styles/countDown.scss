@@ -1,0 +1,75 @@
+$url: "../../public/fonts/";
+$fontName: "FjallaOne-Regular";
+$fontSizeNum: 3rem;
+$fontSizeProp: 1rem;
+$color1: white;
+$bgColor1: black;
+
+@mixin declare-font-face($url, $fontName) {
+  @font-face {
+    font-family: $fontName;
+    src: url($url + "FjallaOne-Regular.woff") format("woff"),
+      url($url + "FjallaOne-Regular.eot"),
+      url($url + "FjallaOne-Regular.eot?#iefix") format("embedded-opentype"),
+      url($url + "FjallaOne-Regular.ttf") format("truetype");
+    font-weight: 100 299;
+    font-style: normal;
+    font-display: swap;
+  }
+}
+
+@include declare-font-face($url, $fontName);
+
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  font-family: $fontName;
+  margin: 1rem;
+  text-align: center;
+}
+
+.container div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: $bgColor1;
+  padding: 2rem 0 1.5rem 0;
+}
+
+.container div:first-child {
+  padding: 0.5rem 0 0 1.2rem;
+  -webkit-border-radius: 5px 0 0 5px;
+  -moz-border-radius: 5px 0 0 5px;
+  border-radius: 5px 0 0 5px;
+}
+
+.container div:last-child {
+  padding: 0.5rem 1.2rem 0 0;
+  -webkit-border-radius: 0px 5px 5px 0;
+  -moz-border-radius: 0px 5px 5px 0;
+  border-radius: 0px 5px 5px 0;
+}
+
+.container > div span:first-child {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 0 1rem 0.5rem 1rem;
+  padding: 0.5rem;
+  border: 2px solid $color1;
+  color: $color1;
+  font-size: $fontSizeNum;
+  min-width: 50px;
+  height: 50px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.container > div span:last-child {
+  font-size: $fontSizeProp;
+  color: $color1;
+}
