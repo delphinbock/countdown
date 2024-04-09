@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { FC, useRef, useEffect, useState, MutableRefObject } from "react";
 
 // NPM
 import moment from "moment";
@@ -8,66 +8,72 @@ import "moment-timezone";
 import "../styles/countDown.scss";
 
 // Custom
-const eventMessage = "It's time of event"; // Message
-const eventDate = "2030-04-10 15:00:00"; // Date
-const eventTimeZone = "America/Toronto"; // Time zone
+const eventMessage: string = "It's time of event"; // Message
+const endEventDateTime: string = "2030-04-10 15:00:00"; // Date
+const eventTimeZone: string = "America/Toronto"; // Time zone
+
+// Types
+type DateTimeObject = {
+  d: number | null;
+  h: number | null;
+  m: number | null;
+  s: number | null;
+};
 
 // Counter
-const Counter = ({ datetimeObj }: any) => {
+const Counter: FC<{ datetimeObj: DateTimeObject }> = ({
+  datetimeObj,
+}) => {
   return (
-    <>
-      <div className="container">
-        <div>
-          <span>{datetimeObj.d}</span>
-          <span>Days</span>
-        </div>
-        <div>
-          <span>{datetimeObj.h}</span>
-          <span>Hours</span>
-        </div>
-        <div>
-          <span>{datetimeObj.m}</span>
-          <span>Min</span>
-        </div>
-        <div>
-          <span>{datetimeObj.s}</span>
-          <span>Sec</span>
-        </div>
+    <div className="container">
+      <div>
+        <span>{datetimeObj.d}</span>
+        <span>Days</span>
       </div>
-    </>
+      <div>
+        <span>{datetimeObj.h}</span>
+        <span>Hours</span>
+      </div>
+      <div>
+        <span>{datetimeObj.m}</span>
+        <span>Min</span>
+      </div>
+      <div>
+        <span>{datetimeObj.s}</span>
+        <span>Sec</span>
+      </div>
+    </div>
   );
 };
 
 // Event message
-const Message = () => {
-  return (
-    <>
-      <p>{eventMessage}</p>
-    </>
-  );
+const Message: FC  = () => {
+  return <p>{eventMessage}</p>;
 };
 
 // Countdown component
-const Countdown = () => {
-  // Dates object
-  const dateObj = {
-    startDateTime: moment().format(),
-    startTimeZone: moment.tz.guess(),
-    endDateTime: eventDate,
-    endTimeZone: eventTimeZone,
-  };
+const Countdown: FC = () => {
+  // Constants
+  const startDateTime: string = moment().format();
+  const startTimeZone: string = moment.tz.guess();
 
   // States
-  const [startDate, setStartDate] = useState<string>(dateObj.startDateTime);
-  const [timeDiff, setTimeDiff] = useState<any>({
+  const [startDate, setStartDate] = useState<string>(startDateTime);
+  const [timeDiff, setTimeDiff] = useState<{
+    d: number | null;
+    h: number | null;
+    m: number | null;
+    s: number | null;
+  }>({
     d: null,
     h: null,
     m: null,
     s: null,
   });
 
-  // Ref
-  let intervalRef: any = useRef<HTMLDivElement>(null);
+  // React hook reference
+  const intervalRef: MutableRefObject<NodeJS.Timeout | null> =
+    useRef<NodeJS.Timeout | null>(null);
 
   // Border effects
   useEffect(() => {
@@ -82,9 +88,9 @@ const Countdown = () => {
       setStartDate(newStartDate);
 
       // Timezone difference
-      var tzStart = moment.tz(startDate, dateObj.startTimeZone);
-      var tzEnd = moment.tz(dateObj.endDateTime, dateObj.endTimeZone);
-      var diff = tzEnd.diff(tzStart);
+      let tzStart = moment.tz(startDate, startTimeZone);
+      let tzEnd = moment.tz(endEventDateTime, eventTimeZone);
+      let diff = tzEnd.diff(tzStart);
 
       // Calculations
       let days = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -108,17 +114,17 @@ const Countdown = () => {
     // Run fnct every seconds
     intervalRef.current = setInterval(decreaseDate, 1000);
 
-    return () => clearInterval(intervalRef.current);
-  }, [
-    dateObj.endDateTime,
-    dateObj.endTimeZone,
-    dateObj.startTimeZone,
-    startDate,
-  ]);
+    return () => {
+      // Check if intervalRef.current exist before clean it
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [startTimeZone, startDate]);
 
   return (
     <>
-      {moment.tz(eventDate, eventTimeZone).diff(moment()) >= 0 ? (
+      {moment.tz(endEventDateTime, eventTimeZone).diff(moment()) >= 0 ? (
         <Counter datetimeObj={timeDiff} />
       ) : (
         <Message />
