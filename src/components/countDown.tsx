@@ -1,11 +1,15 @@
 import { FC, useRef, useEffect, useState, MutableRefObject } from "react";
 
-// NPM
-import moment from "moment";
-import "moment-timezone";
-
 // SCSS
 import "../styles/countDown.scss";
+
+// NPM
+import DayJS from 'dayjs'
+import DayJSUtc from 'dayjs/plugin/utc'
+import DayJSTimezone from 'dayjs/plugin/timezone'
+
+DayJS.extend(DayJSUtc)
+DayJS.extend(DayJSTimezone)
 
 // Custom
 const eventMessage: string = "It's time of event"; // Message
@@ -21,9 +25,7 @@ type DateTimeObject = {
 };
 
 // Counter
-const Counter: FC<{ datetimeObj: DateTimeObject }> = ({
-  datetimeObj,
-}) => {
+const Counter: FC<{ datetimeObj: DateTimeObject }> = ({ datetimeObj }) => {
   return (
     <div className="container">
       <div>
@@ -47,15 +49,15 @@ const Counter: FC<{ datetimeObj: DateTimeObject }> = ({
 };
 
 // Event message
-const Message: FC  = () => {
+const Message: FC = () => {
   return <p>{eventMessage}</p>;
 };
 
 // Countdown component
 const Countdown: FC = () => {
   // Constants
-  const startDateTime: string = moment().format();
-  const startTimeZone: string = moment.tz.guess();
+  const startDateTime: string = DayJS().format();
+  const startTimeZone: string = DayJS.tz.guess();
 
   // States
   const [startDate, setStartDate] = useState<string>(startDateTime);
@@ -80,16 +82,15 @@ const Countdown: FC = () => {
     // Decrease counter fnct
     const decreaseDate = () => {
       // Update +1 second and format
-      let newStartDate = moment(startDate)
-        .add(1, "seconds")
+      let newStartDate = DayJS(startDate)
+        .add(1, "second")
         .format("YYYY-MM-DD HH:mm:ss");
 
       // Record the new date
       setStartDate(newStartDate);
-
       // Timezone difference
-      let tzStart = moment.tz(startDate, startTimeZone);
-      let tzEnd = moment.tz(endEventDateTime, eventTimeZone);
+      let tzStart = DayJS(startDate).tz(startTimeZone);
+      let tzEnd = DayJS(endEventDateTime).tz(eventTimeZone);
       let diff = tzEnd.diff(tzStart);
 
       // Calculations
@@ -124,7 +125,7 @@ const Countdown: FC = () => {
 
   return (
     <>
-      {moment.tz(endEventDateTime, eventTimeZone).diff(moment()) >= 0 ? (
+      {DayJS(endEventDateTime).tz(eventTimeZone).diff(DayJS()) >= 0 ? (
         <Counter datetimeObj={timeDiff} />
       ) : (
         <Message />

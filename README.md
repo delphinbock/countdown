@@ -1,6 +1,7 @@
 ![image](./1.jpg)
 
 [![GNU License](https://img.shields.io/badge/license-GNU-blue.svg?style=style=flat-square)](https://www.gnu.org/licenses/gpl-3.0.html)
+[![React](https://img.shields.io/badge/Reactjs-^18.0.0-green.svg?style=style=flat-square)](https://www.gnu.org/licenses/gpl-3.0.html)
 
 Countdown module, developped in ReactJS 18, Typescript 4.6, Sass 1.5<br />
 
